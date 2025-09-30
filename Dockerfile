@@ -1,26 +1,25 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs19
+FROM python:3.9-slim
 
-# Fix Debian repo and install system dependencies
-RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
-    sed -i '/security.debian.org/d' /etc/apt/sources.list && \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ffmpeg \
-        gcc \
-        python3-dev \
-        build-essential \
-        pkg-config \
-        libffi-dev \
-        libssl-dev \
-    && apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+WORKDIR /app
 
-# Copy app code
-COPY . /app/
-WORKDIR /app/
+# Install system dependencies (build tools, ffmpeg, etc.)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    make \
+    python3-dev \
+    libffi-dev \
+    libssl-dev \
+    pkg-config \
+    ffmpeg \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-# Install Python deps
-RUN pip3 install --no-cache-dir -U pip setuptools wheel && \
-    pip3 install --no-cache-dir -U -r requirements.txt
+# Copy code
+COPY repo /app
+
+# Upgrade pip and install requirements
+RUN pip install --no-cache-dir -U pip setuptools wheel && \
+    if [ -f "requirements.txt" ]; then pip install --no-cache-dir -r requirements.txt; fi
 
 CMD ["bash", "start"]
