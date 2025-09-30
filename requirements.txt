@@ -1,7 +1,7 @@
 gTTS
 aiofiles
 aiohttp
-asyncio           # actually bundled with Python 3.9+, you can REMOVE this line if you want
+# asyncio → bundled with Python 3.9+, so REMOVE this line
 beautifulsoup4
 dnspython
 ffmpeg-python
@@ -36,5 +36,6 @@ youtube-search-python
 # 🔗 GitHub : https://github.com/NoxxOP/ShrutiMusic
 # 📢 Telegram Channel : https://t.me/ShrutiBots
 # ===========================================
+
 
 
